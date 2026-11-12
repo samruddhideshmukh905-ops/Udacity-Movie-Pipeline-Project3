@@ -410,3 +410,59 @@ kustomize build | kubectl apply -f -
 ## License
 
 [License](LICENSE.md)
+
+
+## Project Implementation and Verification
+
+The Movie Picture Pipeline project automates testing, building and deploying a React frontend and Flask backend using GitHub Actions, Docker, Amazon ECR and Amazon EKS.
+
+### CI/CD Workflows
+
+| Workflow | Status |
+|---|---|
+| Frontend CI | Passed |
+| Backend CI | Passed |
+| Frontend CD | Passed |
+| Backend CD | Passed |
+
+Both CI pipelines run lint and test jobs in parallel. The build job runs only after both jobs pass.
+
+Both CD pipelines build Docker images, tag them with the Git commit SHA, push them to Amazon ECR and deploy them to Amazon EKS using Kustomize and kubectl.
+
+### Deployment Details
+
+- AWS Region: us-east-1
+- EKS Cluster: cluster
+- Backend ECR Repository: backend
+- Frontend ECR Repository: frontend
+- Deployed Commit SHA: b187dfb0893e73095c982fc67aa649acacb9f952
+
+### Application URLs
+
+- Frontend: http://a9b541eb816bb4c7e954c3914def3b8c-1533834415.us-east-1.elb.amazonaws.com
+- Backend API: http://a2631f032d70f4d1797b6b397baa90b3-1939513821.us-east-1.elb.amazonaws.com/movies
+
+These URLs were verified during deployment. They may become unavailable after AWS resource cleanup.
+
+### Verification Screenshots
+
+1. [Frontend CI](screenshots/frontend-ci.png)
+2. [Backend CI](screenshots/backend-ci.png)
+3. [Frontend CD](screenshots/frontend-cd.png)
+4. [Backend CD](screenshots/backend-cd.png)
+5. [Backend API Output](screenshots/backend-api-output.png)
+6. [Frontend Movie List](screenshots/frontend-movie-list.png)
+7. [Frontend Movie Details](screenshots/frontend-movie-details.png)
+8. [Kubernetes Deployments and Pods](screenshots/kubernetes-deployments-pods.png)
+9. [ECR Image Verification](screenshots/ecr-image-verification.png)
+10. [Pipeline Failure Verification](screenshots/pipeline-failure-test.png)
+
+### Failure Handling Verification
+
+An isolated pull request with intentionally failing frontend and backend unit tests was used to verify pipeline failure handling. Both CI workflows detected failures and skipped their build jobs. The intentional failures were not merged into the main branch.
+
+[Failure Verification Pull Request](https://github.com/samruddhideshmukh905-ops/Udacity-Movie-Pipeline-Project3/pull/1)
+
+### Final Deployment Verification
+
+The backend API returned all three movies successfully. The frontend displayed the movie list and individual movie details. Both applications were deployed using Docker images tagged with the same Git commit SHA.

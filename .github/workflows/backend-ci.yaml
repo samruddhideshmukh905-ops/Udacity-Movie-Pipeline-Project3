@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - 'starter/backend/**'
-      - '.github/workflows/backend-ci.yaml'
+      
 
   workflow_dispatch:
 
